@@ -1,0 +1,24 @@
+version: '3.9'
+services: 
+  bot:
+    build: .
+    command: sh -c "python db_setup.py && python telegram_bot.py"
+    depends_on:
+      - postgres
+    volumes:
+      - .:/app
+    env_file:
+      - ./.env
+
+
+  postgres:
+    image: postgres:14.4
+    ports: 
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - ./.env
+
+volumes:
+  postgres_data:
